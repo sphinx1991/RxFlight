@@ -12,6 +12,7 @@ import com.ar.sphinx.rxflight.network.model.Price;
 import com.ar.sphinx.rxflight.network.model.Ticket;
 import com.ar.sphinx.rxflight.view.TicketAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,11 +36,11 @@ public class MainActivity extends AppCompatActivity implements TicketAdapter.Tic
 	private Unbinder unbinder;
 
 	private ApiService apiService;
-	private List<Ticket> ticketList;
+	private List<Ticket> ticketList = new ArrayList<>();
 	private TicketAdapter ticketAdapter;
 
 	@BindView(R.id.recycler_view)
-	private RecyclerView recyclerView;
+	RecyclerView recyclerView;
 
 
 	@Override
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements TicketAdapter.Tic
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		unbinder = ButterKnife.bind(this);
+		compositeDisposable = new CompositeDisposable();
 		apiService = ApiClient.getClient().create(ApiService.class);
 		ticketAdapter = new TicketAdapter(this,ticketList,this);
 
@@ -80,20 +82,19 @@ public class MainActivity extends AppCompatActivity implements TicketAdapter.Tic
 							public void onComplete() {
 
 							}
-						})
-		);
+						}));
 
 		compositeDisposable.add(
 				ticketObservable
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
-				.flatMap(new Function<List<Ticket>, ObservableSource<Ticket>>() {
+				.concatMap(new Function<List<Ticket>, ObservableSource<Ticket>>() {
 					@Override
 					public ObservableSource<Ticket> apply(List<Ticket> list) throws Exception {
 						return Observable.fromIterable(list);
 					}
 				})
-				.flatMap(new Function<Ticket, ObservableSource<Ticket>>() {
+				.concatMap(new Function<Ticket, ObservableSource<Ticket>>() {
 					@Override
 					public ObservableSource<Ticket> apply(Ticket ticket) throws Exception {
 						return getPriceObservable(ticket);
@@ -119,8 +120,7 @@ public class MainActivity extends AppCompatActivity implements TicketAdapter.Tic
 					public void onComplete() {
 
 					}
-				})
-		);
+				}));
 		ticketObservable.connect();
 	}
 

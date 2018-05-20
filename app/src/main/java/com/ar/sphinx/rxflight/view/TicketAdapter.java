@@ -38,31 +38,31 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.MyViewHold
 	class MyViewHolder extends RecyclerView.ViewHolder{
 
 		@BindView(R.id.tv_airline_name)
-		private TextView airlineName;
+		TextView airlineName;
 
 		@BindView(R.id.logo)
-		private ImageView logo;
+		ImageView logo;
 
 		@BindView(R.id.tv_num_stops)
-		private TextView stops;
+		TextView stops;
 
 		@BindView(R.id.tv_seats)
-		private TextView seats;
+		TextView seats;
 
 		@BindView(R.id.tv_departure)
-		private TextView deaprture;
+		TextView deaprture;
 
 		@BindView(R.id.tv_arrival)
-		private TextView arrival;
+		TextView arrival;
 
 		@BindView(R.id.tv_time)
-		private TextView duration;
+		TextView duration;
 
 		@BindView(R.id.price)
-		private TextView price;
+		TextView price;
 
 		@BindView(R.id.loader)
-		private SpinKitView loader;
+		SpinKitView loader;
 
 		public MyViewHolder(View itemView) {
 			super(itemView);
