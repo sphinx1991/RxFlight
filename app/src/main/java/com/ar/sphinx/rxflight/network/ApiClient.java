@@ -1,7 +1,6 @@
 package com.ar.sphinx.rxflight.network;
 
 import com.ar.sphinx.rxflight.app.Constants;
-import com.google.gson.Gson;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
